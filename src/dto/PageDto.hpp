@@ -2,7 +2,7 @@
 #ifndef EXAMPLE_JWT_PAGEDTO_HPP
 #define EXAMPLE_JWT_PAGEDTO_HPP
 
-#include "UserDto.hpp"
+#include "AuthDto.hpp"
 
 #include OATPP_CODEGEN_BEGIN(DTO)
 
@@ -18,9 +18,9 @@ class PageDto : public oatpp::DTO {
 
 };
 
-class UsersPageDto : public PageDto<oatpp::Object<UserDto>> {
+class UsersPageDto : public PageDto<oatpp::Object<AuthDto>> {
 
-  DTO_INIT(UsersPageDto, PageDto<oatpp::Object<UserDto>>)
+  DTO_INIT(UsersPageDto, PageDto<oatpp::Object<AuthDto>>)
 
 };
 

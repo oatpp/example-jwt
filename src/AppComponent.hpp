@@ -7,6 +7,9 @@
 
 #include "ErrorHandler.hpp"
 
+#include "oatpp/web/server/interceptor/AllowCorsGlobal.hpp"
+#include "interceptor/AuthInterceptor.hpp"
+
 #include "oatpp/web/server/HttpConnectionHandler.hpp"
 #include "oatpp/web/server/HttpRouter.hpp"
 #include "oatpp/network/tcp/server/ConnectionProvider.hpp"
@@ -31,6 +34,10 @@ public:
    * Database component
    */
   DatabaseComponent databaseComponent;
+
+  OATPP_CREATE_COMPONENT(std::shared_ptr<JWT>, jwt)([]{
+    return std::make_shared<JWT>("<my-secret>", "<my-issuer>");
+  }());
 
   /**
    * Create ObjectMapper component to serialize/deserialize DTOs in Contoller's API
@@ -60,11 +67,19 @@ public:
    */
   OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::network::ConnectionHandler>, serverConnectionHandler)([] {
 
+    OATPP_COMPONENT(std::shared_ptr<JWT>, jwt); // get JWT component
     OATPP_COMPONENT(std::shared_ptr<oatpp::web::server::HttpRouter>, router); // get Router component
     OATPP_COMPONENT(std::shared_ptr<oatpp::data::mapping::ObjectMapper>, objectMapper); // get ObjectMapper component
 
     auto connectionHandler = oatpp::web::server::HttpConnectionHandler::createShared(router);
+
     connectionHandler->setErrorHandler(std::make_shared<ErrorHandler>(objectMapper));
+
+    connectionHandler->addRequestInterceptor(std::make_shared<oatpp::web::server::interceptor::AllowOptionsGlobal>());
+    connectionHandler->addRequestInterceptor(std::make_shared<AuthInterceptor>(jwt));
+
+    connectionHandler->addResponseInterceptor(std::make_shared<oatpp::web::server::interceptor::AllowCorsGlobal>());
+
     return connectionHandler;
 
   }());

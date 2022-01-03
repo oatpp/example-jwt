@@ -4,43 +4,67 @@ project(example-jwt)
 set(CMAKE_CXX_STANDARD 11)
 
 add_library(example-jwt-lib
+        src/auth/AuthHandler.cpp
+        src/auth/AuthHandler.hpp
+        src/auth/JWT.cpp
+        src/auth/JWT.hpp
         src/controller/StaticController.hpp
-        src/controller/UserController.hpp
+        src/controller/StoryController.hpp
+        src/controller/AuthController.hpp
+        src/db/model/UserModel.hpp
+        src/db/StoryDb.hpp
         src/db/UserDb.hpp
+        src/dto/AuthDto.hpp
         src/dto/PageDto.hpp
+        src/dto/SignInDto.hpp
+        src/dto/SingUpDto.hpp
         src/dto/StatusDto.hpp
-        src/dto/UserDto.hpp
-        src/service/UserService.cpp
-        src/service/UserService.hpp
+        src/dto/StoryDto.hpp
+        src/interceptor/AuthInterceptor.cpp
+        src/interceptor/AuthInterceptor.hpp
+        src/service/AuthService.cpp
+        src/service/AuthService.hpp
+        src/service/StoryService.cpp
+        src/service/StoryService.hpp
         src/AppComponent.hpp
         src/DatabaseComponent.hpp
         src/SwaggerComponent.hpp
         src/ErrorHandler.cpp
-        src/ErrorHandler.hpp)
+        src/ErrorHandler.hpp
+)
 
 ## include directories
 
 target_include_directories(example-jwt-lib PUBLIC src)
 
+find_package(OpenSSL 1.1 REQUIRED)
 
 ## link libs
 
-find_package(oatpp          1.2.0 REQUIRED)
-find_package(oatpp-swagger  1.2.0 REQUIRED)
-find_package(oatpp-sqlite   1.2.0 REQUIRED)
+find_package(oatpp              1.3.0 REQUIRED)
+find_package(oatpp-swagger      1.3.0 REQUIRED)
+find_package(oatpp-postgresql   1.3.0 REQUIRED)
+find_package(oatpp-openssl      1.3.0 REQUIRED)
+
+find_package(jwt-cpp REQUIRED PATHS /usr/local/cmake)
 
 target_link_libraries(example-jwt-lib
+        # oatpp
         PUBLIC oatpp::oatpp
         PUBLIC oatpp::oatpp-swagger
-        PUBLIC oatpp::oatpp-sqlite
+        PUBLIC oatpp::oatpp-postgresql
+        PUBLIC oatpp::oatpp-openssl
+
+        # third-party
+        PUBLIC jwt-cpp::jwt-cpp
+        PUBLIC OpenSSL::SSL
+        PUBLIC OpenSSL::Crypto
+
 )
 
 add_definitions(
         ## define path to swagger-ui static resources folder
         -DOATPP_SWAGGER_RES_PATH="${oatpp-swagger_INCLUDE_DIRS}/../bin/oatpp-swagger/res"
-
-        ## SQLite databse file
-        -DDATABASE_FILE="${CMAKE_CURRENT_SOURCE_DIR}/db.sqlite"
 
         ## Path to database migration scripts
         -DDATABASE_MIGRATIONS="${CMAKE_CURRENT_SOURCE_DIR}/sql"

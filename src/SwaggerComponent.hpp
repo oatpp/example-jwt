@@ -5,6 +5,7 @@
 #include "oatpp-swagger/Model.hpp"
 #include "oatpp-swagger/Resources.hpp"
 #include "oatpp/core/macro/component.hpp"
+#include <jwt-cpp/jwt.h>
 
 /**
  *  Swagger ui is served at
@@ -30,7 +31,7 @@ public:
     .setLicenseName("Apache License, Version 2.0")
     .setLicenseUrl("http://www.apache.org/licenses/LICENSE-2.0")
     
-    .addServer("http://localhost:8000", "server on localhost");
+    .addServer("http://testhost:8000", "server on localhost");
     
     return builder.build();
     
