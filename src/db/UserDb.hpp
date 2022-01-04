@@ -17,8 +17,8 @@ public:
     : oatpp::orm::DbClient(executor)
   {
 
-    oatpp::orm::SchemaMigration migration(executor, "user_db_auth");
-    migration.addFile(1 /* start from version 1 */, DATABASE_MIGRATIONS "/001_init.sql");
+    oatpp::orm::SchemaMigration migration(executor, "auth_service");
+    migration.addFile(1 /* start from version 1 */, DATABASE_MIGRATIONS "/AuthService/001_init.sql");
     // TODO - Add more migrations here.
     migration.migrate(); // <-- run migrations. This guy will throw on error.
 
