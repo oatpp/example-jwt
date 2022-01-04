@@ -2,7 +2,7 @@
 #ifndef EXAMPLE_JWT_STORYDB_HPP
 #define EXAMPLE_JWT_STORYDB_HPP
 
-#include "dto/StoryDto.hpp"
+#include "model/StoryModel.hpp"
 #include "oatpp-postgresql/orm.hpp"
 
 #include OATPP_CODEGEN_BEGIN(DbClient) //<- Begin Codegen
@@ -15,8 +15,7 @@ public:
 
   StoryDb(const std::shared_ptr<oatpp::orm::Executor>& executor)
     : oatpp::orm::DbClient(executor)
-  {
-  }
+  {}
 
   QUERY(createStory,
         "INSERT INTO Stories"
@@ -24,9 +23,9 @@ public:
         "(uuid_generate_v4(), :story.userid, :story.content) "
         "RETURNING *;",
         PREPARE(true), // prepared statement!
-        PARAM(oatpp::Object<StoryDto>, story))
+        PARAM(oatpp::Object<StoryModel>, story))
 
-  QUERY(updateStoryByIdAndUserId,
+  QUERY(updateStory,
         "UPDATE Stories "
         "SET "
         " content=:story.content, "
@@ -34,26 +33,26 @@ public:
         " id=:story.id AND userid=:story.userid "
         "RETURNING *;",
         PREPARE(true), // prepared statement!
-        PARAM(oatpp::Object<StoryDto>, story))
+        PARAM(oatpp::Object<StoryModel>, story))
 
-  QUERY(getStoryByIdAndUserId,
-        "SELECT * FROM Stories WHERE id=:id AND userid=:userid;",
+  QUERY(getStoryByUserIdAndId,
+        "SELECT * FROM Stories WHERE id=:id AND userid=:userId;",
         PREPARE(true), // prepared statement!
-        PARAM(oatpp::String, id),
-        PARAM(oatpp::String, userId, "userid"))
+        PARAM(oatpp::String, userId),
+        PARAM(oatpp::String, id))
 
   QUERY(getAllUserStories,
-        "SELECT * FROM Stories WHERE userid=:userid LIMIT :limit OFFSET :offset;",
+        "SELECT * FROM Stories WHERE userid=:userId LIMIT :limit OFFSET :offset;",
         PREPARE(true), // prepared statement!
-        PARAM(oatpp::String, userId, "userid"),
+        PARAM(oatpp::String, userId),
         PARAM(oatpp::UInt32, offset),
         PARAM(oatpp::UInt32, limit))
 
-  QUERY(deleteStoryByIdAndUserId,
-        "DELETE FROM Stories WHERE id=:id AND userid=:userid;",
+  QUERY(deleteStoryByUserIdAndId,
+        "DELETE FROM Stories WHERE id=:id AND userid=:userId;",
         PREPARE(true), // prepared statement!
-        PARAM(oatpp::String, id),
-        PARAM(oatpp::String, userId, "userid"))
+        PARAM(oatpp::String, userId),
+        PARAM(oatpp::String, id))
 
 };
 

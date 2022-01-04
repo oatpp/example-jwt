@@ -11,6 +11,7 @@ add_library(example-jwt-lib
         src/controller/StaticController.hpp
         src/controller/StoryController.hpp
         src/controller/AuthController.hpp
+        src/db/model/StoryModel.hpp
         src/db/model/UserModel.hpp
         src/db/StoryDb.hpp
         src/db/UserDb.hpp

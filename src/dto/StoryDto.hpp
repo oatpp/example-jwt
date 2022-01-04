@@ -1,8 +1,7 @@
 #ifndef EXAMPLE_JWT_STORYDTO_HPP
 #define EXAMPLE_JWT_STORYDTO_HPP
 
-#include "oatpp/core/macro/codegen.hpp"
-#include "oatpp/core/Types.hpp"
+#include "PageDto.hpp"
 
 #include OATPP_CODEGEN_BEGIN(DTO)
 
@@ -11,8 +10,13 @@ class StoryDto : public oatpp::DTO {
   DTO_INIT(StoryDto, DTO)
 
   DTO_FIELD(String, id);
-  DTO_FIELD(String, userId, "userid");
-  DTO_FIELD(String, content, "content");
+  DTO_FIELD(String, content);
+
+};
+
+class StoryPageDto : public PageDto<oatpp::Object<StoryDto>> {
+
+  DTO_INIT(StoryPageDto, PageDto<oatpp::Object<StoryDto>>)
 
 };
 

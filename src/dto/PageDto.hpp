@@ -2,7 +2,8 @@
 #ifndef EXAMPLE_JWT_PAGEDTO_HPP
 #define EXAMPLE_JWT_PAGEDTO_HPP
 
-#include "AuthDto.hpp"
+#include "oatpp/core/macro/codegen.hpp"
+#include "oatpp/core/Types.hpp"
 
 #include OATPP_CODEGEN_BEGIN(DTO)
 
@@ -15,12 +16,6 @@ class PageDto : public oatpp::DTO {
   DTO_FIELD(UInt32, limit);
   DTO_FIELD(UInt32, count);
   DTO_FIELD(Vector<T>, items);
-
-};
-
-class UsersPageDto : public PageDto<oatpp::Object<AuthDto>> {
-
-  DTO_INIT(UsersPageDto, PageDto<oatpp::Object<AuthDto>>)
 
 };
 

@@ -40,8 +40,7 @@ public:
            BODY_DTO(Object<StoryDto>, storyDto))
   {
     storyDto->id = nullptr;
-    storyDto->userId = userId;
-    return createDtoResponse(Status::CODE_200, m_storyService.createStory(storyDto));
+    return createDtoResponse(Status::CODE_200, m_storyService.createStory(userId, storyDto));
   }
   
   
@@ -62,8 +61,7 @@ public:
            BODY_DTO(Object<StoryDto>, storyDto))
   {
     storyDto->id = storyId;
-    storyDto->userId = userId;
-    return createDtoResponse(Status::CODE_200, m_storyService.updateStory(storyDto));
+    return createDtoResponse(Status::CODE_200, m_storyService.updateStory(userId, storyDto));
   }
   
   
@@ -80,14 +78,14 @@ public:
            BUNDLE(String, userId),
            PATH(String, storyId))
   {
-    return createDtoResponse(Status::CODE_200, m_storyService.getStoryByIdAndUserId(storyId, userId));
+    return createDtoResponse(Status::CODE_200, m_storyService.getStoryByUserIdAndId(userId, storyId));
   }
   
   
   ENDPOINT_INFO(getStories) {
-    info->summary = "get all user stories";
+    info->summary = "Get All user stories";
 
-    info->addResponse<oatpp::Object<UsersPageDto>>(Status::CODE_200, "application/json");
+    info->addResponse<oatpp::Object<StoryPageDto>>(Status::CODE_200, "application/json");
     info->addResponse<Object<StatusDto>>(Status::CODE_500, "application/json");
   }
   ENDPOINT("GET", "stories/offset/{offset}/limit/{limit}", getStories,
@@ -111,7 +109,7 @@ public:
            BUNDLE(String, userId),
            PATH(String, storyId))
   {
-    return createDtoResponse(Status::CODE_200, m_storyService.deleteStoryByIdAndUserId(storyId, userId));
+    return createDtoResponse(Status::CODE_200, m_storyService.deleteStoryByUserIdAndId(userId, storyId));
   }
 
 };
