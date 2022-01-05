@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+#  db:
+#    image: postgres
+#    restart: always
+#    environment:
+#      POSTGRES_PASSWORD: db-pass
+#    ports:
+#      - 5432:5432
+
+  service:
+    build: .
+    ports:
+      - "8000:8000"
+#    depends_on:
+#      - db
+#    environment:
+#      CONFIG_PROFILE: local-docker

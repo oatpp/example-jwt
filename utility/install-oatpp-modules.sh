@@ -35,7 +35,7 @@ cd build
 ############################################################################
 ## Flag '-DOATPP_SQLITE_AMALGAMATION=ON' used by oatpp-sqlite module only ##
 ############################################################################
-cmake -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DOATPP_BUILD_TESTS=OFF -DOATPP_SQLITE_AMALGAMATION=ON ..
+cmake -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DOATPP_BUILD_TESTS=OFF ..
 make install -j $NPROC
 
 cd ../../
@@ -46,7 +46,8 @@ cd ../../
 
 install_module $BUILD_TYPE oatpp
 install_module $BUILD_TYPE oatpp-swagger
-install_module $BUILD_TYPE oatpp-sqlite
+install_module $BUILD_TYPE oatpp-postgresql
+install_module $BUILD_TYPE oatpp-openssl
 
 cd ../
 rm -rf tmp
