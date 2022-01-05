@@ -1,11 +1,12 @@
 # Example-JWT [![Build Status](https://dev.azure.com/lganzzzo/lganzzzo/_apis/build/status/oatpp.example-jwt?branchName=master)](https://dev.azure.com/lganzzzo/lganzzzo/_build?definitionId=9?branchName=master)
 
-A complete example of a "CRUD" service (UserService) built with Oat++.
+A complete example of a "CRUD" API secured with JSON Web Token (JWT) built with [Oat++](https://github.com/oatpp/oatpp) and [jwt-cpp](https://github.com/Thalhammer/jwt-cpp).
 
 In this example:
 
-- How to create CRUD endpoint.
-- How to use [oatpp ORM](https://oatpp.io/docs/components/orm/#high-level-overview) - SQLite example.
+- How to create CRUD endpoints.
+- How to secure endpoints with JWT.
+- How to use [Oat++ ORM](https://oatpp.io/docs/components/orm/#high-level-overview) - PostgreSQL example.
 - How to document API with Swagger-UI and OpenApi 3.0.0.
 
 More about Oat++:
@@ -20,19 +21,25 @@ This project is using the following oatpp modules:
 
 - [oatpp](https://github.com/oatpp/oatpp) 
 - [oatpp-swagger](https://github.com/oatpp/oatpp-swagger)
-- [oatpp-sqlite](https://github.com/oatpp/oatpp-sqlite)
+- [oatpp-postgresql](https://github.com/oatpp/oatpp-postgresql)
+- [oatpp-openssl](https://github.com/oatpp/oatpp-openssl)
+
+### 3rd party dependencies
+
+- OpenSSL
+- [jwt-cpp](https://github.com/Thalhammer/jwt-cpp).
 
 ### Project layout
 
 ```
 |- CMakeLists.txt                        // projects CMakeLists.txt
-|- sql/                                  // SQL migration scripts for SQLite database
+|- sql/                                  // SQL migration scripts
 |- src/
 |   |
-|   |- controller/                       // Folder containing REST Controllers (UserController)
-|   |- db/                               // Folder containing the database client
+|   |- controller/                       // Folder containing REST Controllers (AuthController, StoryController)
+|   |- db/                               // Folder containing database clients
 |   |- dto/                              // DTOs are declared here
-|   |- service/                          // Service business logic classes (UserService)
+|   |- service/                          // Service business logic classes (AuthService, StoryService)
 |   |- AppComponent.hpp                  // Service config
 |   |- DatabaseComponent.hpp             // Database config
 |   |- SwaggerComponent.hpp              // Swagger-UI config
@@ -42,53 +49,3 @@ This project is using the following oatpp modules:
 |- utility/install-oatpp-modules.sh      // utility script to install required oatpp-modules.
 ```
 
----
-
-### Build and Run
-
-#### Using CMake
-
-##### Pre Requirements
-
-- `oatpp` 
-- `oatpp-swagger`
-- `oatpp-sqlite` with `-DOATPP_SQLITE_AMALGAMATION=ON` cmake flag.
-
-**Note:** You may run `utility/install-oatpp-modules.sh` script to install required oatpp modules.
-
-##### Build Project
-
-```
-$ mkdir build && cd build
-$ cmake ..
-$ make 
-$ ./example-jwt-exe        # - run application.
-```
-
-#### In Docker
-
-```
-$ docker build -t example-jwt .
-$ docker run -p 8000:8000 -t example-jwt
-```
-
----
-
-### Endpoints 
-
-#### HTML
-
-|HTTP Method|URL|Description|
-|---|---|---|
-|`GET`|http://localhost:8000/ | Root page |
-|`GET`|http://localhost:8000/swagger/ui | Swagger UI page |
-
-#### User Service
-
-|HTTP Method|URL|Description|
-|---|---|---|
-|`POST`|http://localhost:8000/users | Create new User |
-|`PUT`|http://localhost:8000/users/{userId} | Update User by ID |
-|`GET`|http://localhost:8000/users/{userId} | Get User by ID |
-|`DELETE`|http://localhost:8000/users/{userId} | Delete User by ID |
-|`GET`|http://localhost:8000/users/offset/{offset}/limit/{limit} | Get All Users with Paging |
