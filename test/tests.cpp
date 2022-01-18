@@ -1,31 +1,15 @@
 
+#include "FullTest.hpp"
+
 #include "oatpp-test/UnitTest.hpp"
-
-#include "oatpp/core/concurrency/SpinLock.hpp"
 #include "oatpp/core/base/Environment.hpp"
-
-#include "oatpp-swagger/oas3/Model.hpp"
 
 #include <iostream>
 
 namespace {
 
-class Test : public oatpp::test::UnitTest {
-public:
-  Test() : oatpp::test::UnitTest("MyTag")
-  {}
-
-  void onRun() override {
-    // TODO write correct  tests
-  }
-};
-
 void runTests() {
-
-  OATPP_LOGD("test", "insert oatpp-swagger tests here");
-
-  OATPP_RUN_TEST(Test);
-
+  OATPP_RUN_TEST(FullTest);
 }
 
 }

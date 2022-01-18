@@ -8,17 +8,22 @@
 class DatabaseComponent {
 public:
 
-  OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::postgresql::Executor>, databaseExecutor)([] {
-
+  OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::postgresql::ConnectionPool>, connectionPool)([] {
     oatpp::String connStr = "postgresql://postgres:db-pass@localhost:5432/postgres";
 
     /* Create database-specific ConnectionProvider */
     auto connectionProvider = std::make_shared<oatpp::postgresql::ConnectionProvider>(connStr);
 
     /* Create database-specific ConnectionPool */
-    auto connectionPool = oatpp::postgresql::ConnectionPool::createShared(connectionProvider,
-                                                                      10 /* max-connections */,
-                                                                      std::chrono::seconds(5) /* connection TTL */);
+    return oatpp::postgresql::ConnectionPool::createShared(connectionProvider,
+                                                           10 /* max-connections */,
+                                                           std::chrono::seconds(5) /* connection TTL */);
+  }());
+
+  OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::postgresql::Executor>, databaseExecutor)([] {
+
+    /* get connection pool component */
+    OATPP_COMPONENT(std::shared_ptr<oatpp::postgresql::ConnectionPool>, connectionPool);
 
     /* Create database-specific Executor */
     return std::make_shared<oatpp::postgresql::Executor>(connectionPool);

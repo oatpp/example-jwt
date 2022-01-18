@@ -82,6 +82,8 @@ add_executable(example-jwt-exe src/App.cpp)
 target_link_libraries(example-jwt-exe example-jwt-lib)
 
 add_executable(example-jwt-test
+        test/FullTest.cpp
+        test/FullTest.hpp
         test/tests.cpp
 )
 target_link_libraries(example-jwt-test example-jwt-lib)
