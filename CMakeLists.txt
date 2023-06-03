@@ -18,7 +18,7 @@ add_library(example-jwt-lib
         src/dto/AuthDto.hpp
         src/dto/PageDto.hpp
         src/dto/SignInDto.hpp
-        src/dto/SingUpDto.hpp
+        src/dto/SignUpDto.hpp
         src/dto/StatusDto.hpp
         src/dto/StoryDto.hpp
         src/interceptor/AuthInterceptor.cpp

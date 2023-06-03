@@ -6,7 +6,7 @@
 
 #include "db/UserDb.hpp"
 #include "dto/PageDto.hpp"
-#include "dto/SingUpDto.hpp"
+#include "dto/SignUpDto.hpp"
 #include "dto/SignInDto.hpp"
 #include "dto/AuthDto.hpp"
 #include "dto/StatusDto.hpp"
