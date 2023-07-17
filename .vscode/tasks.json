@@ -1,0 +1,60 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558 
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "cmake config debug",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceRoot}/build"
+            },
+            "command": "cmake -DCMAKE_BUILD_TYPE=Debug ${workspaceRoot} -G \"Ninja\"",
+            "group": "build"
+        },
+        {
+            "label": "cmake config release",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceRoot}/build"
+            },
+            "command": "cmake -DCMAKE_BUILD_TYPE=Release ${workspaceRoot} -G \"Ninja\"",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "make",
+            "type": "shell",
+            "command": "ninja",
+            "options": {
+                "cwd": "${workspaceRoot}/build"
+            },
+            "problemMatcher": {
+                "base": "$gcc",
+                "fileLocation": "absolute"
+            },
+            "dependsOn": [
+                "cmake config debug"
+            ],
+            "group": "build"
+        },
+        {
+            "label": "make release",
+            "type": "shell",
+            "command": "ninja",
+            "options": {
+                "cwd": "${workspaceRoot}/build"
+            },
+            "problemMatcher": {
+                "base": "$gcc",
+                "fileLocation": "absolute"
+            },
+            "dependsOn": [
+                "cmake config release"
+            ],
+            "group": "build"
+        }
+    ]
+}
