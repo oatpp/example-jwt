@@ -3,6 +3,31 @@ project(example-jwt)
 
 set(CMAKE_CXX_STANDARD 11)
 
+if( NOT CMAKE_BUILD_TYPE )
+   set( CMAKE_BUILD_TYPE Debug ... FORCE )
+endif() 
+
+enable_testing()
+
+if(CMAKE_BUILD_TYPE MATCHES Debug)
+   set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../Output/Debug/lib)
+   set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../Output/Debug/lib)
+   set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../Output/Debug/bin)
+elseif(CMAKE_BUILD_TYPE MATCHES MinSizeRel)   
+   set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../Output/MinSizeRel/lib)
+   set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../Output/MinSizeRel/lib)
+   set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../Output/MinSizeRel/bin)
+elseif(CMAKE_BUILD_TYPE MATCHES RelWithDebInfo)   
+   set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../Output/RelWithDebInfo/lib)
+   set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../Output/RelWithDebInfo/lib)
+   set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../Output/RelWithDebInfo/bin)   
+else()
+   set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../Output/Release/lib)
+   set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../Output/Release/lib)
+   set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../Output/Release/bin)   
+endif() 
+
+
 add_library(example-jwt-lib
         src/auth/AuthHandler.cpp
         src/auth/AuthHandler.hpp
@@ -47,7 +72,7 @@ find_package(oatpp-swagger      1.3.0 REQUIRED)
 find_package(oatpp-postgresql   1.3.0 REQUIRED)
 find_package(oatpp-openssl      1.3.0 REQUIRED)
 
-find_package(jwt-cpp REQUIRED PATHS /usr/local/cmake)
+find_package(jwt-cpp REQUIRED PATHS /usr/share/cmake)
 
 target_link_libraries(example-jwt-lib
         # oatpp

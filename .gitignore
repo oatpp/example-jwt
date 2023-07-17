@@ -1,3 +1,7 @@
+build
+Output
+.cache
+
 # Prerequisites
 *.d
 
